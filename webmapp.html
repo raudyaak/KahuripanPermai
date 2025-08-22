@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head> 
+    <meta charset="UTF-8">
+    <title>Web Map Dadahup</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css">
+    <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+
+    <style>
+        #map {
+            width: 1500px;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">Peta Batas Administrasi Kecamatan Dadahup</h2>
+<div id="map"></div>
+
+<script src="dadahup.js"></script> <!-- pastikan file ini sudah berisi variabel dadahupgeojson -->
+
+<script>
+// Inisialisasi peta
+var map = L.map('map').setView([-2.5944425, 114.7168702], 11);  // Koordinat pusat Kecamatan Dadahup
+
+// Basemap satelit dari Google
+L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    attribution: '&copy; Google Maps',
+    maxZoom: 20
+}).addTo(map);
+
+// Tambahkan geojson ke peta
+L.geoJSON(dadahupgeojson, {
+    style: function(feature) {
+        switch (feature.properties.WADMKD) {
+            case 'Bentuk Jaya': return {color: "yellow"};
+            case 'Bina Jaya': return {color: "yellow"};
+            case 'Dadahup': return {color: "yellow"};
+            case 'Dadahup Raya': return {color: "yellow"};
+            case 'Harapan Baru': return {color: "yellow"};
+            case 'Kahuripan Permai': return {color: "red"};
+            case 'Manuntung': return {color: "yellow"};
+            case 'Menteng Karya': return {color: "yellow"};
+            case 'Petak Batuah': return {color: "yellow"};
+            case 'Sumber Agung': return {color: "yellow"};
+            case 'Sumber Alaska': return {color: "yellow"};
+            case 'Tanjung Harapan': return {color: "yellow"};
+            case 'Tambak Bajai': return {color: "yellow"};
+            default: return {color: "black"};
+        }
+    },
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup(
+            'Desa: <strong>' + feature.properties.WADMKD + '</strong>'
+        );
+    }
+}).addTo(map);
+</script>
+
+</body>
+</html>
